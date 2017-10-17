@@ -20,7 +20,7 @@ grad = zeros(size(theta));
 %
 % Hint: The computation of the cost function and gradients can be
 %       efficiently vectorized. For example, consider the computation
-%
+%ize
 %           sigmoid(X * theta)
 %
 %       Each row of the resulting matrix will contain the value of the
@@ -36,17 +36,33 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+%The code below is from ex2
+%J = 1/m*(-y'*log(sigmoid(X*theta)) - (1-y')*log(1-sigmoid(X*theta)));
+
+%need to verify same dimensions as theta with size() function
+%grad = 1/m*X'*(sigmoid(X*theta)-y);
 
 
+%temp = theta; 
+%temp(1) = 0;   % because we don't add anything for j = 0 
+
+%J = 1/m*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta)));
+%J = J + lambda/(2*m)*sum(temp.*temp);
 
 
+%grad = 1/m*X'*(sigmoid(X*theta)-y);
+%grad = grad + lambda/(m)*(temp);
 
-
-
-
+%refactored code below. Using truncated theata instead of creating a copy.
+%For the grad function a concatentation of theta is used to replace first
+%element 
+J = 1/m*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta))) + lambda/(2*m)*sum(theta(2:end,:).*theta(2:end,:));
+grad = 1/m*X'*(sigmoid(X*theta)-y) + lambda/(m)*([0;theta(2:end)]);
 
 % =============================================================
 
 grad = grad(:);
+
+
 
 end

@@ -22,12 +22,22 @@ p = zeros(size(X, 1), 1);
 %
 
 
+%solve for z2
+%add ones column to X 
+X = [ones(m, 1) X];
+%Solve for z2 which yields a 25 by 5000 matrix
+z2 = Theta1*X';
+%solve for a2, this yields a 25 by 5000 matrix
+a2 = sigmoid(z2);
+%add bias column to a2, first transpose 
+a2 = [ones(size(a2', 1), 1) a2'];
+%solving for z3
+z3 = Theta2*a2';
+%solve for a3
+a3 = sigmoid(z3);
 
-
-
-
-
-
+%finally, grabbing the max values for the predictions
+[pval,p] = max(a3', [], 2);
 
 % =========================================================================
 

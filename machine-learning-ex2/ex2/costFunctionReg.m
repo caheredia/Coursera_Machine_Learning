@@ -18,13 +18,19 @@ grad = zeros(size(theta));
 %               derivatives of the cost w.r.t. each parameter in theta
 
 %Cost function 
-J = 1/m*(-y'*log(sigmoid(X*theta)) - (1-y')*log(1-sigmoid(X*theta)))+1/(2*m)*lambda*theta(2:end)'*theta(2:end);
+%J = 1/m*(-y'*log(sigmoid(X*theta)) - (1-y')*log(1-sigmoid(X*theta)))+1/(2*m)*lambda*theta(2:end)'*theta(2:end);
 
 
 %Vectorizing the grad function, appending 0 to the first element in the
 %second term, thus not regularizing theta(1),
-grad = 1/m*X'*(sigmoid(X*theta)-y) - [0,(lambda/m.*theta(2:end))']';
+%grad = 1/m*X'*(sigmoid(X*theta)-y) - [0,(lambda/m.*theta(2:end))']';
 
+
+%refactored code below. Using truncated theata instead of creating a copy.
+%For the grad function a concatentation of theta is used to replace first
+%element 
+J = 1/m*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta))) + lambda/(2*m)*sum(theta(2:end,:).*theta(2:end,:));
+grad = 1/m*X'*(sigmoid(X*theta)-y) + lambda/(m)*([0;theta(2:end)]);
 
 % =============================================================
 

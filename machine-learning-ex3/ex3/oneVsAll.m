@@ -49,7 +49,17 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+options = optimset('GradObj', 'on', 'MaxIter', 50);
 
+%iterate through each label and save theta to all_theta, in this case
+%number of labels is 10
+for c=1:num_labels
+    initial_theta = zeros(n + 1, 1);
+    %solve for each theta
+    [theta] = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)),initial_theta, options);
+    %save theta to corresponding row, convert column to row vector 
+    all_theta(c,:) = theta'
+end
 
 
 

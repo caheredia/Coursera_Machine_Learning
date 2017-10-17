@@ -31,10 +31,10 @@ X = [ones(m, 1) X];
 %       
 
 
+%want p to grab the index of the highest probability. Use sigmoid to
+%convert X and all_theta to 1 or 0 value. 
 
-
-
-
+[pval,p] = max(sigmoid(X*all_theta'), [], 2);
 
 % =========================================================================
 
