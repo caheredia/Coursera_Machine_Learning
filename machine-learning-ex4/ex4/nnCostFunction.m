@@ -62,7 +62,22 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% J is the same from ex3 in logistic regression, except no regulurization terms
+% are usted, and this new cost function needs to sum for K values. 
 
+%this adds a one column, length m, to the X matrix 
+X = [ones(m,1) X];
+%Solves for a2
+a2= sigmoid(Theta1*X');
+
+
+%refactored code below. Using truncated theata instead of creating a copy.
+%For the grad function a concatentation of theta is used to replace first
+%element 
+J = 1/m*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta))) ;
+
+
+%grad = 1/m*X'*(sigmoid(X*theta)-y) + lambda/(m)*([0;theta(2:end)]);
 
 
 
