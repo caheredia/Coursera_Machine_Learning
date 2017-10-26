@@ -65,16 +65,30 @@ Theta2_grad = zeros(size(Theta2));
 % J is the same from ex3 in logistic regression, except no regulurization terms
 % are usted, and this new cost function needs to sum for K values. 
 
-%this adds a one column, length m, to the X matrix 
-X = [ones(m,1) X];
-%Solves for a2
-a2= sigmoid(Theta1*X');
+% this adds a one column, length m, to the X matrix 
+% Solving for the activation layers 
+a1 = [ones(m,1) X];
+%maintain rows
+z2 = a1*Theta1';
+a2 = sigmoid(z2);
+%add a2_0
+a2 = [ones(size(a2, 1), 1) a2];
+z3 = a2*Theta2';
+a3 = sigmoid(z3);
 
 
-%refactored code below. Using truncated theata instead of creating a copy.
-%For the grad function a concatentation of theta is used to replace first
-%element 
-J = 1/m*sum(-y.*log(sigmoid(X*theta)) - (1-y).*log(1-sigmoid(X*theta))) ;
+% y has 5000 values ranging from 1:10 
+% we want to build vectors such that values of Yk yeild identity vector 
+% corresponding to y(i)
+Ident_matrix = eye(num_labels);
+for i = 1:m 
+  Yk(i,:) = Ident_matrix(:,y(i))'; 
+end
+
+% Calculate cost function with Yk values 
+h = a3;
+%needed to sum twice 
+J = sum(1/m*sum(-Yk.*log(h) - (1-Yk).*log(1-h))) ;
 
 
 %grad = 1/m*X'*(sigmoid(X*theta)-y) + lambda/(m)*([0;theta(2:end)]);
