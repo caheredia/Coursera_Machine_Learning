@@ -67,11 +67,12 @@ Theta2_grad = zeros(size(Theta2));
 
 % this adds a one column, length m, to the X matrix 
 % Solving for the activation layers 
+% add bias column a1_0 to a1
 a1 = [ones(m,1) X];
 %maintain rows
 z2 = a1*Theta1';
 a2 = sigmoid(z2);
-%add a2_0
+% add bias column a2_0 to a2
 a2 = [ones(size(a2, 1), 1) a2];
 z3 = a2*Theta2';
 a3 = sigmoid(z3);
@@ -90,12 +91,34 @@ h = a3;
 % needed to sum twice 
 J = sum(1/m*sum(-Yk.*log(h) - (1-Yk).*log(1-h))) ;
 % reg term for both thetas vectorized
-reg_term = lambda/(2*m)*( sum(sum(Theta1(:,2:end).^2) + sum(sum(Theta2(:,2:end).^2))));
-J = J + reg_term
+reg_term = lambda/(2*m)*( sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
+% For complete cost function add reg_term
+J = J + reg_term;
 
 
-%grad = 1/m*X'*(sigmoid(X*theta)-y) + lambda/(m)*([0;theta(2:end)]);
+% STEP 1, from ex4.pdf, find feed forward activations solve for above 
+% STEP 2, For each output unit k in layer 3 (the output layer), set
+delta_3 = a3 - Yk;
+% STEP 3, solve for delta_2, for the hidden layer l = 2, need to add a 1 column
+% vector to z2 in order to make the function work, then delete first element 
+delta_2 = delta_3*Theta2.*sigmoidGradient([ones(size(z2, 1), 1) z2]);
+delta_2 = delta_2(:,2:end);
+% STEP 4, Accumulate the gradient. Since we only have 3 layers, we caclutate up 
+% to delta_2
+Delta_1 = delta_2'*a1;
+Delta_2 = delta_3'*a2;
+% STEP 5, Obtain the (unregularized) gradient for the neural network cost 
+% function by dividing the accumulated gradients
+Theta1_grad = Delta_1/m;
+Theta2_grad = Delta_2/m;
 
+% Now solving for Regularized Neural Networks
+% We should not include the bias term for the theta vectors
+% Need to add a column of vectors to fix the index mismatch
+Theta1 = [zeros(size(Theta1, 1), 1) Theta1(:,2:end)];
+Theta2 = [zeros(size(Theta2, 1), 1) Theta2(:,2:end)];
+Theta1_grad = Theta1_grad + lambda/m*Theta1;
+Theta2_grad = Theta2_grad + lambda/m*Theta2;
 
 
 

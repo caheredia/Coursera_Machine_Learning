@@ -14,9 +14,8 @@ g = zeros(size(z));
 
 
 
-
-
-
+% added . to make it work with vectors 
+g = sigmoid(z).*(1 - sigmoid(z));
 
 
 
