@@ -87,9 +87,9 @@ end
 
 % Calculate cost function with Yk values 
 h = a3;
-%needed to sum twice 
+% needed to sum twice 
 J = sum(1/m*sum(-Yk.*log(h) - (1-Yk).*log(1-h))) ;
-
+% reg term for both thetas vectorized
 reg_term = lambda/(2*m)*( sum(sum(Theta1(:,2:end).^2) + sum(sum(Theta2(:,2:end).^2))));
 J = J + reg_term
 
