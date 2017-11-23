@@ -25,7 +25,7 @@ reg_term = lambda/(2*m)*( sum(theta(2:end,:).^2) );
 % For complete cost function add reg_term
 J = J + reg_term;
 
-grad = sum((X*theta-y).*X)'/m + 7/m*[0 theta(2:end,:)']';
+grad = sum((X*theta-y).*X)'/m + lambda/m*[0 theta(2:end,:)']';
 
 
 % =========================================================================

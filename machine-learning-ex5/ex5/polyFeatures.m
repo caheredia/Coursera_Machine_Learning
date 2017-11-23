@@ -15,11 +15,16 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
+for i = 1:p
+  % add a new column which is the first to the power of the column number
+  X_poly(:,i) = X(:,1).^i;
 
-
+end
 
 
 
 % =========================================================================
 
 end
+
+
