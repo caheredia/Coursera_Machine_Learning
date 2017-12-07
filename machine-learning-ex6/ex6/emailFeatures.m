@@ -46,10 +46,12 @@ x = zeros(n, 1);
 %
 %              x = [ 0 0 0 0 1 0 0 0 ... 0 0 0 0 1 ... 0 0 0 1 0 ..];
 %
-%
-
-
-
+% Check to see if an index exist in word_list, if so save as 1, otherwise 0
+for i = 1:n
+  if any(i==word_indices)==1
+    x(i,1)= 1;
+end 
+end 
 
 
 
